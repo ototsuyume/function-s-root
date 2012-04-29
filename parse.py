@@ -150,7 +150,7 @@ def find_root(l):
             break
         f1 = f2
         i+=1
-    if i<10000:
+    if i<=10000:
         print("The root of the function is:%f"%f2)
 
 
