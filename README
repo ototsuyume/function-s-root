@@ -1,0 +1,30 @@
+Find the root of a real-valued function with Newton's Method.
+
+Example:
+./parse.py "x^3-e^x"
+
+Output:
+['x', '^', '3', '-', 'e', '^', 'x']
+('current token', 'x')
+('current token', '^')
+('current opr', '^')
+('current token', '3')
+('current token', '-')
+('current opr', '-')
+('22222222222', '-')
+('current token', 'e')
+('current token', '^')
+('current opr', '^')
+('current token', 'x')
+(3, 2)
+('before differention:', '(x^(3))-(2.71828182846^(x))')
+fuck
+('Differention:', '1*3*(x^(2))-ln(2.71828182846)*(2.71828182846^(x))*1')
+('Simplify:', '3*(x^(2))-(2.71828182846^(x))')
+Iterating times:1 value:89.000000
+...
+Iterating times:88 value:4.575997
+Iterating times:89 value:4.537968
+The root of the function is:4.537968
+
+
