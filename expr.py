@@ -135,7 +135,6 @@ class pow_expr(expr):
             if r:
                 return pow_expr(exp_value(),mul_expr(self._right,ln_expr(self._left))).differention()
             else:
-                print("fuck")
                 return mul_expr(self._left.differention(),mul_expr(self._right,pow_expr(self._left,value_expr(self._right.evaluate()-1))))
         else:
             if r:
