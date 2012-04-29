@@ -59,7 +59,6 @@ def _parser(tokl,typel):
     oprstack=list(range(100))
     print(tokl)
     while i<len(tokl):
-        print("current token",tokl[i])
         if typel[i]==TK_NUM:
             numstack[nsp]=value_expr(int(tokl[i]))
             ret = numstack[nsp]
@@ -68,16 +67,19 @@ def _parser(tokl,typel):
             if tokl[i]=='x':
                 numstack[nsp] = x
                 ret = x
-                nsp+=1
             elif tokl[i]=='e':
                 numstack[nsp] = exp_value()
                 ret = numstack[nsp]
-                nsp+=1
             elif tokl[i+1]!='(':
                 raise Exception("Syntax error:the element after name must be a (")
-            #numstack[i]=
+            else:
+                e,l=_parser(tokl[i+2:],typel[i+2:])
+                numstack[nsp]=nameexpr[tokl[i]](e)
+                i=i+2+l
+            ret = numstack[nsp]
+            nsp+=1
+        
         elif typel[i]==TK_OPR:
-            print("current opr",tokl[i])
             if tokl[i]=='(':
                 i+=1
                 numstack[nsp],b=_parser(tokl[i:],typel[i:])
@@ -101,7 +103,6 @@ def _parser(tokl,typel):
                 oprstack[osp]=tokl[i]
                 osp+=1
             else:
-                print("22222222222",tokl[i])
                 lastopr=oprstack[osp-1]
                 while opr[lastopr]>=opr[tokl[i]]:
                     ret = oprexpr[lastopr](numstack[nsp-2],numstack[nsp-1]) 
@@ -114,7 +115,6 @@ def _parser(tokl,typel):
                 oprstack[osp]=tokl[i]
                 osp+=1
         i+=1
-    print(nsp,osp)
     while osp>0:
         ret = oprexpr[oprstack[osp-1]](numstack[nsp-2],numstack[nsp-1])
         numstack[nsp-2]=ret
@@ -126,6 +126,7 @@ def _parser(tokl,typel):
 def find_root(l):
     tokl,typel = tokenize(l)
     a,b=_parser(tokl,typel)
+    print(a)
     print("before differention:",a.get_node())
     c=a.differention()
     print("Differention:",c.get_node())
@@ -134,21 +135,23 @@ def find_root(l):
 
     print("Simplify:",c.get_node())
     d = sub_expr(x,div_expr(a,c))
-    f1 = randint(0,100)
+    f1 = 1
     f2 = 0
     i  = 1
     while True:
         x.set_value(f1)
         f2 = d.evaluate()
         print("Iterating times:%d value:%f"%(i,f2))
-        if abs(f2-f1) < 0.01*f2 :
-            break
         x.set_value(f2)
-        if abs(a.evaluate())<=0.01*f2:
+        if abs(a.evaluate())<=0.01:
+            break
+        if i>10000:
+            print("Can not find a root of the function")
             break
         f1 = f2
         i+=1
-    print("The root of the function is:%f"%f2)
+    if i<10000:
+        print("The root of the function is:%f"%f2)
 
 
  

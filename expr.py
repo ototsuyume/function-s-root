@@ -161,11 +161,12 @@ class pow_expr(expr):
 
 class ln_expr(expr):
     def __init__(self,e):
+        print(e)
         self._content=e
         
     
     def evaluate(self):
-        return value_expr(math.log(self._content.evaluate()))
+        return math.log(self._content.evaluate())
 
     def differention(self):
         return div_expr(self._content.differention(),self._content)
